@@ -2,10 +2,17 @@
   <!-- IP Infos -->
   <section class="ip-data-section mb-10 mt-2">
     <header class="mb-2 flex flex-col items-start justify-between gap-4">
-      <h2 id="IPInfo"
-        class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
-        🔦 {{ t('ipInfos.Title') }}
-      </h2>
+      <div class="flex flex-row items-center justify-between gap-4 w-full">
+        <h2 id="IPInfo"
+          class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
+          🔦 {{ t('ipInfos.Title') }}
+        </h2>
+        <JnTooltip text="查看原理与教程" side="left">
+          <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="emitAppEvent('open-tutorial', { tool: 'ip' })" aria-label="IP Tutorial">
+            <BookOpen class="size-4" />
+          </Button>
+        </JnTooltip>
+      </div>
       <div class="text-base text-muted-foreground">
         <p v-if="!isSimpleMode">{{ t('ipInfos.Notes') }}</p>
       </div>
@@ -43,6 +50,9 @@ import { emitAppEvent, waitForAppEvent } from '@/utils/app-events';
 import { useAppCommand } from '@/composables/use-app-command.js';
 import { useAsnInfo } from '@/composables/use-asn-info.js';
 import { authenticatedFetch, fetchErrorLabel, logSourceFetchFailure } from '@/utils/authenticated-fetch';
+import { JnTooltip } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { BookOpen } from '@lucide/vue';
 import IPCard from './ip-infos/IPCard.vue';
 import InfoBanner from './widgets/InfoBanner.vue';
 

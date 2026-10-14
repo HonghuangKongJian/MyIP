@@ -87,6 +87,14 @@
         <!-- Docs assistant entry point (ask box on desktop, icon on mobile) -->
         <DocsSearch />
 
+        <!-- Tutorials entry point -->
+        <JnTooltip text="工具教程与原理解析">
+          <Button variant="ghost" size="icon" class="size-8 cursor-pointer" aria-label="Open tutorials"
+            @click="openTutorials">
+            <BookOpen class="size-4" />
+          </Button>
+        </JnTooltip>
+
         <!-- Preferences — standalone cog only for Firebase-less self-hosted
              instances (no user menu to host it). With the user system on,
              preferences lives inside the user dropdown for every state. -->
@@ -237,6 +245,12 @@
               {{ t(`nav.${item}`) }}
             </a>
           </template>
+          <button type="button"
+            class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-muted text-left w-full cursor-pointer"
+            @click="openTutorials('ip'); store.setOpenSheet(null)">
+            <BookOpen class="size-4 shrink-0" />
+            <span>工具教程与原理解析</span>
+          </button>
           <a :href="t('page.footerLink')" target="_blank" rel="noopener"
             class="mt-3 flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">
             <Icon icon="ri:github-line" class="size-4" />
@@ -284,7 +298,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {
   Award, ChevronDown, UserRound, HeartHandshake,
-  LogOut, Menu, Cog,
+  LogOut, Menu, Cog, BookOpen,
 } from '@lucide/vue';
 import DocsSearch from '@/components/widgets/DocsSearch.vue';
 import Pulse from '@/components/widgets/Pulse.vue';
@@ -296,10 +310,16 @@ import { isToolAvailable } from '@/utils/tool-availability.js';
 import { fetchWithTimeout } from '@/utils/fetch-with-timeout.js';
 import { formatStarCount } from '@/utils/format-star-count.js';
 import { isRunningAsPwa } from '@/utils/pwa.js';
+import { emitAppEvent } from '@/utils/app-events';
 
 const { t, locale } = useI18n();
 const store = useMainStore();
 const router = useRouter();
+
+const openTutorials = (tool = 'ip') => {
+  emitAppEvent('open-tutorial', { tool });
+  trackEvent('Nav', 'NavClick', 'Tutorials');
+};
 
 const isDarkMode = computed(() => store.isDarkMode);
 const isMobile = computed(() => store.isMobile);

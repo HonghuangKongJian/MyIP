@@ -8,12 +8,20 @@
           class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
           🛑 {{ t('dnsleaktest.Title') }}
         </h2>
-        <JnTooltip :text="t('Tooltips.RefreshDNSLeakTest')" side="left">
-          <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="checkAllDNSLeakTest(true)"
-            aria-label="Refresh DNS Leak Test">
-            <component :is="isStarted ? RotateCw : Play" />
-          </Button>
-        </JnTooltip>
+        <div class="flex items-center gap-2">
+          <JnTooltip text="查看原理与教程" side="left">
+            <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="emitAppEvent('open-tutorial', { tool: 'dns' })"
+              aria-label="DNS Leak Tutorial">
+              <BookOpen class="size-4" />
+            </Button>
+          </JnTooltip>
+          <JnTooltip :text="t('Tooltips.RefreshDNSLeakTest')" side="left">
+            <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="checkAllDNSLeakTest(true)"
+              aria-label="Refresh DNS Leak Test">
+              <component :is="isStarted ? RotateCw : Play" />
+            </Button>
+          </JnTooltip>
+        </div>
       </div>
       <div class="text-base text-muted-foreground">
         <p v-if="!isSimpleMode">{{ t('dnsleaktest.Note') }}</p>
@@ -101,7 +109,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useStatusTone, ipFieldTone, isFieldPending as isFieldPendingShared } from '@/composables/use-status-tone.js';
 import { createMaskGate } from '@/composables/use-info-mask.js';
 import { useMaxmind } from '@/composables/use-maxmind.js';
-import { EthernetPort, Play, MapPin, RotateCw, DoorOpen } from '@lucide/vue';
+import { EthernetPort, Play, MapPin, RotateCw, DoorOpen, BookOpen } from '@lucide/vue';
 import { Icon } from '@iconify/vue';
 import FitText from '@/components/widgets/FitText.vue';
 import InfoBanner from '@/components/widgets/InfoBanner.vue';

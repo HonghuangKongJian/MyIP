@@ -7,12 +7,20 @@
           class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
           🚱 {{ t('webrtc.Title') }}
         </h2>
-        <JnTooltip :text="t('Tooltips.RefreshWebRTC')" side="left">
-          <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="checkAllWebRTC(true)"
-            aria-label="Refresh WebRTC Test">
-            <component :is="isStarted ? RotateCw : Play" />
-          </Button>
-        </JnTooltip>
+        <div class="flex items-center gap-2">
+          <JnTooltip text="查看原理与教程" side="left">
+            <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="emitAppEvent('open-tutorial', { tool: 'webrtc' })"
+              aria-label="WebRTC Tutorial">
+              <BookOpen class="size-4" />
+            </Button>
+          </JnTooltip>
+          <JnTooltip :text="t('Tooltips.RefreshWebRTC')" side="left">
+            <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="checkAllWebRTC(true)"
+              aria-label="Refresh WebRTC Test">
+              <component :is="isStarted ? RotateCw : Play" />
+            </Button>
+          </JnTooltip>
+        </div>
       </div>
       <div class="text-base text-muted-foreground">
         <p v-if="!isSimpleMode">{{ t('webrtc.Note') }}</p>
@@ -132,7 +140,7 @@ import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/component
 import { useStatusTone, ipFieldTone, isFieldPending as isFieldPendingShared } from '@/composables/use-status-tone.js';
 import { createMaskGate } from '@/composables/use-info-mask.js';
 import { useMaxmind } from '@/composables/use-maxmind.js';
-import { Play, MapPin, EthernetPort, Flower, Network, RotateCw, FileText, ChevronDown } from '@lucide/vue';
+import { Play, MapPin, EthernetPort, Flower, Network, RotateCw, FileText, ChevronDown, BookOpen } from '@lucide/vue';
 import { Icon } from '@iconify/vue';
 import FitText from '@/components/widgets/FitText.vue';
 import CopyButton from '@/components/widgets/CopyButton.vue';

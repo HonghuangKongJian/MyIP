@@ -8,6 +8,12 @@
           class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
           🚀 {{ t('speedtest.Title') }}
         </h2>
+        <JnTooltip text="查看原理与教程" side="left">
+          <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="emitAppEvent('open-tutorial', { tool: 'speedtest' })"
+            aria-label="SpeedTest Tutorial">
+            <BookOpen class="size-4" />
+          </Button>
+        </JnTooltip>
       </div>
       <div class="text-base text-muted-foreground">
         <p v-if="!isSimpleMode">{{ t('speedtest.Note') }}</p>
@@ -198,7 +204,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import InfoBanner from '@/components/widgets/InfoBanner.vue';
 import {
   ArrowLeftRight, CalendarCheck2, CircleAlert, Play, CloudDownload, CloudUpload,
-  Globe, Pause, PersonStanding, RotateCw,
+  Globe, Pause, PersonStanding, RotateCw, BookOpen,
 } from '@lucide/vue';
 import { Icon } from '@iconify/vue';
 

@@ -21,6 +21,7 @@
     <QueryIP ref="queryIPRef" />
   </FloatingDock>
   <HelpModal ref="helpModalRef" />
+  <TutorialsModal ref="tutorialsModalRef" />
   <Additional />
   <Footer />
 </template>
@@ -58,6 +59,7 @@ const Achievements = defineAsyncComponent(() => import('./Achievements.vue'));
 const Preferences = defineAsyncComponent(() => import('./widgets/Preferences.vue'));
 const QueryIP = defineAsyncComponent(() => import('./widgets/QueryIP.vue'));
 const HelpModal = defineAsyncComponent(() => import('./widgets/Help.vue'));
+const TutorialsModal = defineAsyncComponent(() => import('./widgets/TutorialsModal.vue'));
 const IPHistory = defineAsyncComponent(() => import('./widgets/IPHistory.vue'));
 const ShareReport = defineAsyncComponent(() => import('./report/ShareReportDialog.vue'));
 import { useMainStore } from '@/store';
@@ -81,6 +83,7 @@ const userRef = ref(null);
 const achievementsRef = ref(null);
 const queryIPRef = ref(null);
 const helpModalRef = ref(null);
+const tutorialsModalRef = ref(null);
 const shareReportRef = ref(null);
 const advancedToolsRef = ref(null);
 
