@@ -75,19 +75,10 @@ const createDefaultCard = () => ({
 });
 
 // IP data cards
-// Order: v4, v6, CF-v4, CF-v6, CN, v64
+// IP data cards
+// Order: CF-v4, CF-v6, v4, v6, CN, v64
 // First 2 / 4 / 6 slice is meaningful at every count the user can pick.
 const ipDataCards = reactive([
-  {
-    ...createDefaultCard(),
-    id: "ipchecking_v4",
-    source: "IPCheck.ing IPv4",
-  },
-  {
-    ...createDefaultCard(),
-    id: "ipchecking_v6",
-    source: "IPCheck.ing IPv6",
-  },
   {
     ...createDefaultCard(),
     id: "cloudflare_v4",
@@ -97,6 +88,16 @@ const ipDataCards = reactive([
     ...createDefaultCard(),
     id: "cloudflare_v6",
     source: "Cloudflare IPv6",
+  },
+  {
+    ...createDefaultCard(),
+    id: "ipchecking_v4",
+    source: "IPCheck.ing IPv4",
+  },
+  {
+    ...createDefaultCard(),
+    id: "ipchecking_v6",
+    source: "IPCheck.ing IPv6",
   },
   {
     ...createDefaultCard(),
@@ -152,10 +153,10 @@ const markFetched = (cardID) => {
 // event (function names would be mangled by minification). Order matches the
 // ipSources table in checkAllIPs.
 const CARD_SOURCE_SLUGS = [
-  'ipchecking-v4',
-  'ipchecking-v6',
   'cloudflare-v4',
   'cloudflare-v6',
+  'ipchecking-v4',
+  'ipchecking-v6',
   'ipip',
   'ipchecking-64',
 ];
@@ -279,10 +280,10 @@ const checkAllIPs = async () => {
   // every card to land again, instead of re-firing on the first one.
   fetchStatus.splice(0);
   const ipSources = [
-    [0, getIPFromIPChecking4],
-    [1, getIPFromIPChecking6],
-    [2, getIPFromCloudflare_V4],
-    [3, getIPFromCloudflare_V6],
+    [0, getIPFromCloudflare_V4],
+    [1, getIPFromCloudflare_V6],
+    [2, getIPFromIPChecking4],
+    [3, getIPFromIPChecking6],
     [4, getIPFromIPIP],
     [5, getIPFromIPChecking64],
   ].slice(0, ipCardsToShow.value);
@@ -402,16 +403,16 @@ const refreshCard = (card, index) => {
   clearCardData(card);
   switch (index) {
     case 0:
-      fetchIP(0, getIPFromIPChecking4);
+      fetchIP(0, getIPFromCloudflare_V4);
       break;
     case 1:
-      fetchIP(1, getIPFromIPChecking6);
+      fetchIP(1, getIPFromCloudflare_V6);
       break;
     case 2:
-      fetchIP(2, getIPFromCloudflare_V4);
+      fetchIP(2, getIPFromIPChecking4);
       break;
     case 3:
-      fetchIP(3, getIPFromCloudflare_V6);
+      fetchIP(3, getIPFromIPChecking6);
       break;
     case 4:
       fetchIP(4, getIPFromIPIP);

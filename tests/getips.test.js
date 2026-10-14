@@ -10,6 +10,8 @@ import { describe, it } from 'node:test';
 
 import {
   runChain,
+  isIPv4,
+  isOnlyIPv6,
   getIPFromIPChecking4,
   getIPFromIPChecking6,
   getIPFromIPChecking64,
@@ -36,6 +38,29 @@ const stubProvider = (id, name, behavior) => {
 const originalWarn = console.warn;
 console.warn = () => {};
 process.on('exit', () => { console.warn = originalWarn; });
+
+describe('version validators', () => {
+  it('isIPv4 accepts valid IPv4 and rejects IPv6 / garbage', () => {
+    assert.equal(isIPv4('1.1.1.1'), true);
+    assert.equal(isIPv4('104.28.163.235'), true);
+    assert.equal(isIPv4('2001:4860:4860::8888'), false);
+    assert.equal(isIPv4('::1'), false);
+    assert.equal(isIPv4('not-an-ip'), false);
+    assert.equal(isIPv4(''), false);
+    assert.equal(isIPv4(null), false);
+  });
+
+  it('isOnlyIPv6 accepts valid IPv6 and rejects IPv4 / garbage', () => {
+    assert.equal(isOnlyIPv6('2001:4860:4860::8888'), true);
+    assert.equal(isOnlyIPv6('2606:4700::1111'), true);
+    assert.equal(isOnlyIPv6('::1'), true);
+    assert.equal(isOnlyIPv6('1.1.1.1'), false);
+    assert.equal(isOnlyIPv6('104.28.163.235'), false);
+    assert.equal(isOnlyIPv6('not-an-ip'), false);
+    assert.equal(isOnlyIPv6(''), false);
+    assert.equal(isOnlyIPv6(null), false);
+  });
+});
 
 describe('runChain', () => {
   it('returns the first hop when its IP is valid, without touching later hops', async () => {
