@@ -8,37 +8,37 @@
       <TutorialBanner />
 
       <!-- 1. IP 信息独立页：上面是功能，下面是教程 -->
-      <div v-show="currentSection === 'IPInfo'" class="space-y-6">
+      <div v-if="visitedSections.has('IPInfo')" v-show="currentSection === 'IPInfo'" class="space-y-6">
         <IPCheck />
         <ToolTutorialCard tool="ip" />
       </div>
 
       <!-- 2. 网络连通性独立页：上面是功能，下面是教程 -->
-      <div v-show="currentSection === 'Connectivity'" class="space-y-6">
+      <div v-if="visitedSections.has('Connectivity')" v-show="currentSection === 'Connectivity'" class="space-y-6">
         <Connectivity />
         <ToolTutorialCard tool="connectivity" />
       </div>
 
       <!-- 3. WebRTC 泄漏测试独立页：上面是功能，下面是教程 -->
-      <div v-show="currentSection === 'WebRTC'" class="space-y-6">
+      <div v-if="visitedSections.has('WebRTC')" v-show="currentSection === 'WebRTC'" class="space-y-6">
         <WebRTC />
         <ToolTutorialCard tool="webrtc" />
       </div>
 
       <!-- 4. DNS 泄漏测试独立页：上面是功能，下面是教程 -->
-      <div v-show="currentSection === 'DNSLeakTest'" class="space-y-6">
+      <div v-if="visitedSections.has('DNSLeakTest')" v-show="currentSection === 'DNSLeakTest'" class="space-y-6">
         <DNSLeaks />
         <ToolTutorialCard tool="dns" />
       </div>
 
       <!-- 5. 网速测试独立页：上面是功能，下面是教程 -->
-      <div v-show="currentSection === 'SpeedTest'" class="space-y-6">
+      <div v-if="visitedSections.has('SpeedTest')" v-show="currentSection === 'SpeedTest'" class="space-y-6">
         <SpeedTest />
         <ToolTutorialCard tool="speedtest" />
       </div>
 
       <!-- 6. 高级工具独立页：上面是功能，下面是教程 -->
-      <div v-show="currentSection === 'AdvancedTools'" class="space-y-6">
+      <div v-if="visitedSections.has('AdvancedTools')" v-show="currentSection === 'AdvancedTools'" class="space-y-6">
         <AdvancedTools ref="advancedToolsRef" />
         <ToolTutorialCard tool="advanced" />
       </div>
@@ -70,19 +70,21 @@
 // template refs are null until the chunk lands — consumers (use-shortcuts)
 // must optional-chain.
 import NavBar from './Nav.vue';
-import IPCheck from './IpInfos.vue';
-import Connectivity from './ConnectivityTest.vue';
-import WebRTC from './WebRtcTest.vue';
-import DNSLeaks from './DnsLeaksTest.vue';
-import SpeedTest from './SpeedTest.vue';
-import AdvancedTools from './Advanced.vue';
 import InfoMask from './widgets/InfoMask.vue';
 import FloatingDock from './widgets/FloatingDock.vue';
 import TutorialBanner from './widgets/TutorialBanner.vue';
 import ToolTutorialCard from './tutorials/ToolTutorialCard.vue';
 
 // Vue + Store
-import { ref, computed, onMounted, defineAsyncComponent } from 'vue';
+import { ref, computed, onMounted, watch, defineAsyncComponent } from 'vue';
+
+// On-demand Async Components for sections
+const IPCheck = defineAsyncComponent(() => import('./IpInfos.vue'));
+const Connectivity = defineAsyncComponent(() => import('./ConnectivityTest.vue'));
+const WebRTC = defineAsyncComponent(() => import('./WebRtcTest.vue'));
+const DNSLeaks = defineAsyncComponent(() => import('./DnsLeaksTest.vue'));
+const SpeedTest = defineAsyncComponent(() => import('./SpeedTest.vue'));
+const AdvancedTools = defineAsyncComponent(() => import('./Advanced.vue'));
 
 // Async (off-critical-path) components
 const Additional = defineAsyncComponent(() => import('./Additional.vue'));
@@ -110,6 +112,16 @@ const store = useMainStore();
 const configs = computed(() => store.configs);
 const userPreferences = computed(() => store.userPreferences);
 const currentSection = computed(() => store.currentSection);
+
+// Only load and render the current active section on startup, lazily mount subsequent sections on demand
+const visitedSections = ref(new Set([store.currentSection || 'IPInfo']));
+watch(
+  () => store.currentSection,
+  (sec) => {
+    if (sec) visitedSections.value.add(sec);
+  },
+  { immediate: true },
+);
 
 // Template refs — UI chrome only; the test sections are reached through the
 // command bus (utils/app-commands.js), not refs.

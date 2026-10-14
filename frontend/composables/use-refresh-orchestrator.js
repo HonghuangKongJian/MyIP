@@ -36,6 +36,8 @@ function scheduleTimedTasks(tasks) {
 }
 
 export function useRefreshOrchestrator({ store, t, userPreferences, infoMaskLevel }) {
+    const executedSections = new Set();
+
     const refreshingAlert = () => {
         store.setAlert(
             true,
@@ -45,51 +47,55 @@ export function useRefreshOrchestrator({ store, t, userPreferences, infoMaskLeve
         );
     };
 
-    const refreshEverything = () => {
-        store.setLoadingStatus('Connectivity', false);
-        store.setLoadingStatus('WebRTC', false);
-        store.setLoadingStatus('DNSLeakTest', false);
-        store.setLoadingStatus('IPInfo', false);
+    const runSection = (section, isRefresh = false) => {
+        if (section === 'IPInfo') {
+            store.setLoadingStatus('IPInfo', false);
+            runCommand('ipinfo:refresh');
+            executedSections.add('IPInfo');
+        } else if (section === 'Connectivity') {
+            store.setLoadingStatus('Connectivity', false);
+            runCommand('connectivity:run', { trigger: isRefresh ? 'refresh' : 'boot' });
+            executedSections.add('Connectivity');
+        } else if (section === 'WebRTC') {
+            store.setLoadingStatus('WebRTC', false);
+            runCommand('webrtc:run', { isRefresh });
+            executedSections.add('WebRTC');
+        } else if (section === 'DNSLeakTest') {
+            store.setLoadingStatus('DNSLeakTest', false);
+            runCommand('dnsleak:run', { isRefresh });
+            executedSections.add('DNSLeakTest');
+        }
+    };
 
-        scheduleTimedTasks([
-            { action: () => runCommand('ipinfo:refresh'), delay: 0 },
-            { action: () => runCommand('connectivity:run', { trigger: 'refresh' }), delay: 300 },
-            { action: () => runCommand('webrtc:run', { isRefresh: true }), delay: 200 },
-            { action: () => runCommand('dnsleak:run', { isRefresh: true }), delay: 100 },
-            { action: () => refreshingAlert(), delay: 300 },
-        ]);
+    const refreshEverything = () => {
+        const current = store.currentSection || 'IPInfo';
+        runSection(current, true);
+        refreshingAlert();
         infoMaskLevel.value = 0;
         store.setRefreshEveryThing(false);
     };
 
-    const loadingControl = (t1 = 0, t2 = 300, t3 = 200, t4 = 100) => {
-        const mountedStatus = Object.values(store.mountingStatus).every(Boolean);
-        if (mountedStatus) {
-            const prefs = userPreferences.value;
-            // IP info always runs on load — it has no per-module switch by design.
-            setTimeout(() => runCommand('ipinfo:refresh'), t1);
-            // Each remaining module runs only if its switch is on; when off we
-            // flag it loaded immediately so allHasLoaded still resolves — it gates
-            // the info-mask button, the user-info fetch, and the brand shimmer.
-            if (prefs.autoRunConnectivity) {
-                setTimeout(() => runCommand('connectivity:run', { trigger: 'boot' }), t2);
-            } else {
-                store.setLoadingStatus('Connectivity', true);
+    const loadingControl = () => {
+        const current = store.currentSection || 'IPInfo';
+        const allSections = ['IPInfo', 'Connectivity', 'WebRTC', 'DNSLeakTest'];
+        allSections.forEach((s) => {
+            if (s !== current) {
+                store.setLoadingStatus(s, true);
             }
-            if (prefs.autoRunWebRTC) {
-                setTimeout(() => runCommand('webrtc:run'), t3);
-            } else {
-                store.setLoadingStatus('WebRTC', true);
-            }
-            if (prefs.autoRunDnsLeak) {
-                setTimeout(() => runCommand('dnsleak:run'), t4);
-            } else {
-                store.setLoadingStatus('DNSLeakTest', true);
-            }
-        } else {
-            setTimeout(() => loadingControl(t1, t2, t3, t4), 100);
-        }
+        });
+        runSection(current, false);
     };
+
+    watch(
+        () => store.currentSection,
+        (newSection) => {
+            if (newSection && !executedSections.has(newSection)) {
+                setTimeout(() => {
+                    runSection(newSection, false);
+                }, 150);
+            }
+        },
+    );
 
     watch(
         () => store.shouldRefreshEveryThing,
