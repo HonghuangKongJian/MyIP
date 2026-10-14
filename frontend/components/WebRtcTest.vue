@@ -10,7 +10,7 @@
         <div class="flex items-center gap-2">
           <Button variant="secondary" size="sm"
             class="h-8 gap-1.5 px-3 text-xs font-semibold cursor-pointer rounded-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/25 transition-all duration-200 hover:scale-105 shadow-2xs shrink-0"
-            @click="emitAppEvent('open-tutorial', { tool: 'webrtc' })">
+            @click="scrollToTutorial">
             <BookOpen class="size-3.5 text-primary" />
             <span>原理解析</span>
           </Button>
@@ -155,6 +155,15 @@ const maskAttr = createMaskGate(t);
 const isSimpleMode = computed(() => userPreferences.value.simpleMode);
 const { dotClass, textClass } = useStatusTone();
 const { lookupMaxmind } = useMaxmind();
+
+const scrollToTutorial = () => {
+  const el = document.getElementById('tutorial-section');
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    emitAppEvent('open-tutorial', { tool: 'webrtc' });
+  }
+};
 
 const isStarted = ref(false);
 // Sticky settled flag for the section's banner slot: true once a full STUN

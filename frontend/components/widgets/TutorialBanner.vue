@@ -54,8 +54,9 @@
 import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { BookOpen, ArrowRight, Globe, ShieldAlert, Terminal, Activity } from '@lucide/vue';
-import { emitAppEvent } from '@/utils/app-events.js';
+import { useMainStore } from '@/store';
 
+const store = useMainStore();
 const isVisible = ref(true);
 
 const quickTags = [
@@ -66,6 +67,14 @@ const quickTags = [
 ];
 
 const openTutorial = (tool = 'ip') => {
-  emitAppEvent('open-tutorial', { tool });
+  const sectionMap = {
+    ip: 'IPInfo',
+    webrtc: 'WebRTC',
+    dns: 'DNSLeakTest',
+    speedtest: 'SpeedTest',
+  };
+  const target = sectionMap[tool] || 'IPInfo';
+  store.changeSection(target);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 </script>

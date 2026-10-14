@@ -6,12 +6,42 @@
   <main id="mainpart" class="mx-auto w-full px-4 jn-container">
     <div class="rounded-md">
       <TutorialBanner />
-      <IPCheck />
-      <Connectivity />
-      <WebRTC />
-      <DNSLeaks />
-      <SpeedTest />
-      <AdvancedTools ref="advancedToolsRef" />
+
+      <!-- 1. IP 信息独立页：上面是功能，下面是教程 -->
+      <div v-show="currentSection === 'IPInfo'" class="space-y-6">
+        <IPCheck />
+        <ToolTutorialCard tool="ip" />
+      </div>
+
+      <!-- 2. 网络连通性独立页：上面是功能，下面是教程 -->
+      <div v-show="currentSection === 'Connectivity'" class="space-y-6">
+        <Connectivity />
+        <ToolTutorialCard tool="connectivity" />
+      </div>
+
+      <!-- 3. WebRTC 泄漏测试独立页：上面是功能，下面是教程 -->
+      <div v-show="currentSection === 'WebRTC'" class="space-y-6">
+        <WebRTC />
+        <ToolTutorialCard tool="webrtc" />
+      </div>
+
+      <!-- 4. DNS 泄漏测试独立页：上面是功能，下面是教程 -->
+      <div v-show="currentSection === 'DNSLeakTest'" class="space-y-6">
+        <DNSLeaks />
+        <ToolTutorialCard tool="dns" />
+      </div>
+
+      <!-- 5. 网速测试独立页：上面是功能，下面是教程 -->
+      <div v-show="currentSection === 'SpeedTest'" class="space-y-6">
+        <SpeedTest />
+        <ToolTutorialCard tool="speedtest" />
+      </div>
+
+      <!-- 6. 高级工具独立页：上面是功能，下面是教程 -->
+      <div v-show="currentSection === 'AdvancedTools'" class="space-y-6">
+        <AdvancedTools ref="advancedToolsRef" />
+        <ToolTutorialCard tool="advanced" />
+      </div>
     </div>
   </main>
   <FloatingDock :ready="showMaskButton" :mask-active="infoMaskLevel > 0">
@@ -49,6 +79,7 @@ import AdvancedTools from './Advanced.vue';
 import InfoMask from './widgets/InfoMask.vue';
 import FloatingDock from './widgets/FloatingDock.vue';
 import TutorialBanner from './widgets/TutorialBanner.vue';
+import ToolTutorialCard from './tutorials/ToolTutorialCard.vue';
 
 // Vue + Store
 import { ref, computed, onMounted, defineAsyncComponent } from 'vue';
@@ -78,6 +109,7 @@ const { t } = useI18n();
 const store = useMainStore();
 const configs = computed(() => store.configs);
 const userPreferences = computed(() => store.userPreferences);
+const currentSection = computed(() => store.currentSection);
 
 // Template refs — UI chrome only; the test sections are reached through the
 // command bus (utils/app-commands.js), not refs.

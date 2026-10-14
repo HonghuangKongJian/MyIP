@@ -40,7 +40,7 @@
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger :class="['h-auto bg-transparent', navLinkClass(item)]"
-                  @click="scrollToSection('AdvancedTools'); trackEvent('Nav', 'NavClick', item)">
+                  @click="handleNavItemClick('AdvancedTools')">
                   {{ t(`nav.${item}`) }}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent class="z-50">
@@ -62,7 +62,7 @@
           </NavigationMenu>
           <!-- All other sections stay plain smooth-scroll anchors. -->
           <a v-else href="#" :class="navLinkClass(item)"
-            @click.prevent="scrollToSection(item); trackEvent('Nav', 'NavClick', item)">
+            @click.prevent="handleNavItemClick(item)">
             {{ t(`nav.${item}`) }}
           </a>
         </template>
@@ -243,7 +243,7 @@
             </Collapsible>
             <!-- All other sections stay plain smooth-scroll anchors. -->
             <a v-else href="#" :class="navLinkClass(item, { block: true })"
-              @click.prevent="scrollToSection(item); trackEvent('Nav', 'NavClick', item); store.setOpenSheet(null)">
+              @click.prevent="handleNavItemClick(item); store.setOpenSheet(null)">
               {{ t(`nav.${item}`) }}
             </a>
           </template>
@@ -420,27 +420,23 @@ const handleLogoClick = (e) => {
   trackEvent('Nav', 'NavClick', 'Logo');
 };
 
-// Menu scroll (leave space for sticky header)
-const scrollToSection = (el, offset = 70) => {
-  const element = typeof el === 'string' ? document.getElementById(el) : el;
-  if (!element) return;
-  const y = element.getBoundingClientRect().top + window.scrollY - offset;
-  window.scrollTo({ top: y, behavior: 'smooth' });
+// Nav item click: Switch active section and smoothly scroll to top
+const handleNavItemClick = (item) => {
+  store.changeSection(item);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  trackEvent('Nav', 'NavClick', item);
 };
 
-// Open a tool from the nav: scroll to the Advanced Tools section, then raise the
-// drawer (driven by the `?tool=` query Advanced.vue watches). Scrolls twice — the
-// mobile nav Sheet locks body scroll until it closes, so the first scroll is a
-// no-op there and the deferred one lands after the Sheet is gone.
+// Open a tool from the nav: switch to AdvancedTools section, then raise the drawer
 let openToolTimer = null;
 const openTool = (slug) => {
-  store.setOpenSheet(null);            // close the mobile nav Sheet (no-op on desktop)
-  scrollToSection('AdvancedTools');
+  store.setOpenSheet(null);
+  store.changeSection('AdvancedTools');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   clearTimeout(openToolTimer);
   openToolTimer = setTimeout(() => {
-    scrollToSection('AdvancedTools');
     router.push({ path: '/', query: { tool: slug } });
-  }, 300);
+  }, 100);
   const name = slug.charAt(0).toUpperCase() + slug.slice(1);
   trackEvent('Nav', 'NavClick', name);
 };
