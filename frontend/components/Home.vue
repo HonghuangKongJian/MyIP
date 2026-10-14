@@ -5,6 +5,7 @@
   <Preferences />
   <main id="mainpart" class="mx-auto w-full px-4 jn-container">
     <div class="rounded-md">
+      <TutorialBanner />
       <IPCheck />
       <Connectivity />
       <WebRTC />
@@ -47,6 +48,7 @@ import SpeedTest from './SpeedTest.vue';
 import AdvancedTools from './Advanced.vue';
 import InfoMask from './widgets/InfoMask.vue';
 import FloatingDock from './widgets/FloatingDock.vue';
+import TutorialBanner from './widgets/TutorialBanner.vue';
 
 // Vue + Store
 import { ref, computed, onMounted, defineAsyncComponent } from 'vue';

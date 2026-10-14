@@ -89,9 +89,11 @@
 
         <!-- Tutorials entry point -->
         <JnTooltip text="工具教程与原理解析">
-          <Button variant="ghost" size="icon" class="size-8 cursor-pointer" aria-label="Open tutorials"
-            @click="openTutorials">
-            <BookOpen class="size-4" />
+          <Button variant="secondary" size="sm"
+            class="h-8 gap-1.5 px-2.5 cursor-pointer font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/25 shadow-2xs transition-all duration-200 hover:scale-105"
+            aria-label="Open tutorials" @click="openTutorials('ip')">
+            <BookOpen class="size-3.5 text-primary" />
+            <span class="text-xs font-semibold">教程</span>
           </Button>
         </JnTooltip>
 
@@ -246,10 +248,11 @@
             </a>
           </template>
           <button type="button"
-            class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-muted text-left w-full cursor-pointer"
+            class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold bg-primary/10 text-primary border border-primary/20 text-left w-full cursor-pointer transition-colors hover:bg-primary/15 my-1 shadow-2xs"
             @click="openTutorials('ip'); store.setOpenSheet(null)">
-            <BookOpen class="size-4 shrink-0" />
-            <span>工具教程与原理解析</span>
+            <BookOpen class="size-4 shrink-0 text-primary" />
+            <span>核心工具教程与原理解析</span>
+            <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-normal">精选</span>
           </button>
           <a :href="t('page.footerLink')" target="_blank" rel="noopener"
             class="mt-3 flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">

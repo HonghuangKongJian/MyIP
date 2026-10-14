@@ -7,11 +7,12 @@
           class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
           🔦 {{ t('ipInfos.Title') }}
         </h2>
-        <JnTooltip text="查看原理与教程" side="left">
-          <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="emitAppEvent('open-tutorial', { tool: 'ip' })" aria-label="IP Tutorial">
-            <BookOpen class="size-4" />
-          </Button>
-        </JnTooltip>
+        <Button variant="secondary" size="sm"
+          class="h-8 gap-1.5 px-3 text-xs font-semibold cursor-pointer rounded-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/25 transition-all duration-200 hover:scale-105 shadow-2xs shrink-0"
+          @click="emitAppEvent('open-tutorial', { tool: 'ip' })">
+          <BookOpen class="size-3.5 text-primary" />
+          <span>原理解析</span>
+        </Button>
       </div>
       <div class="text-base text-muted-foreground">
         <p v-if="!isSimpleMode">{{ t('ipInfos.Notes') }}</p>
