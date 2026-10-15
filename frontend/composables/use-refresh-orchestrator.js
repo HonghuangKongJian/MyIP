@@ -18,12 +18,15 @@
 // here are fire-and-forget — completion is reported on the event bus.
 
 import { watch } from 'vue';
-import { dispatchAppCommand } from '../utils/app-commands.js';
+import { dispatchAppCommand, waitForAppCommand } from '../utils/app-commands.js';
 
-const runCommand = (name, payload) => {
-    dispatchAppCommand(name, payload).catch((error) => {
+const runCommand = async (name, payload) => {
+    try {
+        await waitForAppCommand(name, { timeoutMs: 10000 });
+        await dispatchAppCommand(name, payload);
+    } catch (error) {
         console.warn(`[refresh-orchestrator] ${name} failed:`, error);
-    });
+    }
 };
 
 function scheduleTimedTasks(tasks) {

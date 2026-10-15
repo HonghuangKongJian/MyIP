@@ -478,6 +478,9 @@ useAppCommand('ipinfo:refresh', ({ index } = {}) => {
 
 onMounted(() => {
   store.setMountingStatus('IPInfo', true);
+  if (fetchStatus.length === 0 && IPArray.value.length === 0) {
+    checkAllIPs();
+  }
 });
 
 </script>

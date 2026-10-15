@@ -55,7 +55,7 @@ function setStaticHeaders(res, filePath) {
   } else if (/\.(png|jpg|jpeg|webp|svg|ico)$/i.test(rel)) {
     res.setHeader('Cache-Control', `public, max-age=${7 * 24 * 60 * 60}`);
   } else if (rel.endsWith('.html') || rel === 'manifest.webmanifest' || SEO_SURFACES.has(rel)) {
-    res.setHeader('Cache-Control', `public, max-age=0, s-maxage=${24 * 60 * 60}, must-revalidate`);
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   } else {
     res.setHeader('Cache-Control', `public, max-age=${60 * 60}`);
   }
