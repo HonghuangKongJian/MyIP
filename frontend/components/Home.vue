@@ -69,16 +69,16 @@
             @click="switchToSection(prevSection.id)"
             class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-secondary/80 hover:bg-secondary text-secondary-foreground border border-border shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer">
             <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            <span>上一页：{{ prevSection.name }}</span>
+            <span>{{ t('nav.prevPage', { name: prevSection.name }) }}</span>
           </button>
           <div v-else class="text-xs text-muted-foreground/60 hidden sm:block">
-            第一页（首屏）
+            {{ t('nav.firstPage') }}
           </div>
         </div>
 
         <div class="flex items-center gap-3">
           <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20">
-            第 {{ currentIndex + 1 }} 页 / 共 {{ SECTIONS_LIST.length }} 页
+            {{ t('nav.pageIndicator', { current: currentIndex + 1, total: SECTIONS_LIST.length }) }}
           </span>
           <div class="flex items-center gap-1.5">
             <button 
@@ -98,11 +98,11 @@
             v-if="nextSection" 
             @click="switchToSection(nextSection.id)"
             class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all cursor-pointer">
-            <span>下一页：{{ nextSection.name }}</span>
+            <span>{{ t('nav.nextPage', { name: nextSection.name }) }}</span>
             <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
           </button>
           <div v-else class="text-xs text-muted-foreground/60 hidden sm:block">
-            最后一页
+            {{ t('nav.lastPage') }}
           </div>
         </div>
       </div>
@@ -176,15 +176,15 @@ const configs = computed(() => store.configs);
 const userPreferences = computed(() => store.userPreferences);
 const currentSection = computed(() => store.currentSection);
 
-// 6 大功能独立分页列表
-const SECTIONS_LIST = [
-  { id: 'IPInfo', name: 'IP 信息' },
-  { id: 'Connectivity', name: '网络连通性' },
-  { id: 'WebRTC', name: 'WebRTC 检查' },
-  { id: 'DNSLeakTest', name: 'DNS 泄漏测试' },
-  { id: 'SpeedTest', name: '网速测试' },
-  { id: 'AdvancedTools', name: '高级网络工具' },
-];
+// 6 大功能独立分页列表（动态响应式多语言）
+const SECTIONS_LIST = computed(() => [
+  { id: 'IPInfo', name: t('nav.IPInfo') },
+  { id: 'Connectivity', name: t('nav.Connectivity') },
+  { id: 'WebRTC', name: t('nav.WebRTC') },
+  { id: 'DNSLeakTest', name: t('nav.DNSLeakTest') },
+  { id: 'SpeedTest', name: t('nav.SpeedTest') },
+  { id: 'AdvancedTools', name: t('nav.AdvancedTools') },
+]);
 
 // 响应式已访问模块记录（用于按需加载）
 const visitedSections = reactive({
@@ -208,16 +208,19 @@ watch(
 
 // 当前页码与翻页计算
 const currentIndex = computed(() => {
-  const idx = SECTIONS_LIST.findIndex(s => s.id === store.currentSection);
+  const list = SECTIONS_LIST.value;
+  const idx = list.findIndex(s => s.id === store.currentSection);
   return idx === -1 ? 0 : idx;
 });
 
 const prevSection = computed(() => {
-  return currentIndex.value > 0 ? SECTIONS_LIST[currentIndex.value - 1] : null;
+  const list = SECTIONS_LIST.value;
+  return currentIndex.value > 0 ? list[currentIndex.value - 1] : null;
 });
 
 const nextSection = computed(() => {
-  return currentIndex.value < SECTIONS_LIST.length - 1 ? SECTIONS_LIST[currentIndex.value + 1] : null;
+  const list = SECTIONS_LIST.value;
+  return currentIndex.value < list.length - 1 ? list[currentIndex.value + 1] : null;
 });
 
 const switchToSection = (sectionId) => {

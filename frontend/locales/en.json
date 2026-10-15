@@ -353,7 +353,16 @@
     },
     "DocsPrompt": "Type your question…",
     "DocsSignInTitle": "Sign In Required",
-    "DocsSignInMessage": "Sign in to ask IPilot"
+    "DocsSignInMessage": "Sign in to ask IPilot",
+    "backToPortal": "Back to Portal",
+    "portal": "Portal",
+    "backToPortalHome": "Return to AMW Portal",
+    "backToPortalTip": "Return to AMW Cloud Tools Portal (amw3.eu.org)",
+    "prevPage": "Previous: {name}",
+    "nextPage": "Next: {name}",
+    "firstPage": "First page (Home)",
+    "lastPage": "Last page",
+    "pageIndicator": "Page {current} / {total}"
   },
   "securitychecklist": {
     "Title": "Security Checklist",

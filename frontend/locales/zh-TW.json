@@ -353,7 +353,16 @@
     },
     "DocsPrompt": "輸入你想詢問的問題…",
     "DocsSignInTitle": "需要登入",
-    "DocsSignInMessage": "登入後即可詢問 IPilot"
+    "DocsSignInMessage": "登入後即可詢問 IPilot",
+    "backToPortal": "返回門戶",
+    "portal": "門戶",
+    "backToPortalHome": "返回 AMW 門戶首頁",
+    "backToPortalTip": "返回 AMW 雲工具門戶 (amw3.eu.org)",
+    "prevPage": "上一頁：{name}",
+    "nextPage": "下一頁：{name}",
+    "firstPage": "第一頁（首屏）",
+    "lastPage": "最後一頁",
+    "pageIndicator": "第 {current} 頁 / 共 {total} 頁"
   },
   "securitychecklist": {
     "Title": "安全檢查清單",

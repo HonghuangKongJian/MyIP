@@ -353,7 +353,16 @@
     },
     "DocsPrompt": "Digite sua pergunta…",
     "DocsSignInTitle": "Login necessário",
-    "DocsSignInMessage": "Faça login para perguntar ao IPilot"
+    "DocsSignInMessage": "Faça login para perguntar ao IPilot",
+    "backToPortal": "Voltar ao Portal",
+    "portal": "Portal",
+    "backToPortalHome": "Voltar à página inicial do AMW",
+    "backToPortalTip": "Voltar ao portal de ferramentas cloud AMW (amw3.eu.org)",
+    "prevPage": "Anterior: {name}",
+    "nextPage": "Próximo: {name}",
+    "firstPage": "Primeira página",
+    "lastPage": "Última página",
+    "pageIndicator": "Página {current} de {total}"
   },
   "securitychecklist": {
     "Title": "Checklist de segurança",

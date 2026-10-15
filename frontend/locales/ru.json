@@ -353,7 +353,16 @@
     },
     "DocsPrompt": "Введите свой вопрос…",
     "DocsSignInTitle": "Требуется вход",
-    "DocsSignInMessage": "Войдите, чтобы задавать вопросы IPilot"
+    "DocsSignInMessage": "Войдите, чтобы задавать вопросы IPilot",
+    "backToPortal": "К порталу",
+    "portal": "Портал",
+    "backToPortalHome": "Вернуться на портал AMW",
+    "backToPortalTip": "Вернуться к облачным инструментам AMW (amw3.eu.org)",
+    "prevPage": "Назад: {name}",
+    "nextPage": "Вперед: {name}",
+    "firstPage": "Первая страница",
+    "lastPage": "Последняя страница",
+    "pageIndicator": "Стр. {current} из {total}"
   },
   "securitychecklist": {
     "Title": "Контрольный список безопасности",

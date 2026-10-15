@@ -353,7 +353,16 @@
     },
     "DocsPrompt": "Saisissez votre question…",
     "DocsSignInTitle": "Connexion requise",
-    "DocsSignInMessage": "Connectez-vous pour interroger IPilot"
+    "DocsSignInMessage": "Connectez-vous pour interroger IPilot",
+    "backToPortal": "Retour au portail",
+    "portal": "Portail",
+    "backToPortalHome": "Retour à l'accueil AMW",
+    "backToPortalTip": "Retour au portail d'outils cloud AMW (amw3.eu.org)",
+    "prevPage": "Précédent : {name}",
+    "nextPage": "Suivant : {name}",
+    "firstPage": "Première page (Accueil)",
+    "lastPage": "Dernière page",
+    "pageIndicator": "Page {current} sur {total}"
   },
   "securitychecklist": {
     "Title": "Liste de vérification de sécurité",

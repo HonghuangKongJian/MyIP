@@ -16,10 +16,10 @@
       <div class="flex items-center gap-1.5 sm:gap-2">
         <a href="https://amw3.eu.org" target="_top"
           class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground border border-primary/20 transition-all duration-200 hover:scale-105 shadow-2xs mr-0.5"
-          title="返回 AMW 云工具门户 (amw3.eu.org)">
+          :title="t('nav.backToPortalTip')">
           <ArrowLeft class="size-3.5" />
-          <span class="hidden sm:inline">返回门户</span>
-          <span class="sm:hidden font-medium">门户</span>
+          <span class="hidden sm:inline">{{ t('nav.backToPortal') }}</span>
+          <span class="sm:hidden font-medium">{{ t('nav.portal') }}</span>
         </a>
         <Button v-if="isMobile" variant="ghost" size="icon" class="size-8" :aria-expanded="isNavMenuOpen"
           aria-label="Toggle navigation menu" @click="store.toggleSheet('navMenu')">
@@ -229,7 +229,7 @@
           <a href="https://amw3.eu.org" target="_top"
             class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-left w-full cursor-pointer transition-colors hover:bg-blue-500/15 mb-2 shadow-2xs">
             <ArrowLeft class="size-4 shrink-0 text-blue-500" />
-            <span>返回 AMW 门户首页</span>
+            <span>{{ t('nav.backToPortalHome') }}</span>
             <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-blue-500 text-white font-normal">Hub</span>
           </a>
           <template v-for="item in navItems" :key="item">
